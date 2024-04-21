@@ -7,6 +7,7 @@ import SearchMovie from "./pages/SearchMovie";
 import Detail from "./pages/Detail";
 
 function App() {
+  
   return (
     <>
       <Routes>
