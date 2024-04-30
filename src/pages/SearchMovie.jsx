@@ -3,6 +3,7 @@ import axios from "axios";
 import NavBar from "../components/NavBar";
 import CardComponent from "../components/CardComponent";
 import { Box, Divider, TextField, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export default function SearchMovie() {
   const [searchMovies, setSearchMovies] = useState([]);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -13,12 +13,14 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import FormattedDate from "../hooks/FormattedDate";
+import DetailDialog from "./DetailDialog";
 
 export default function CardComponent(props) {
   const { movies } = props;
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState();
   const handleClick = (movie) => {
-    navigate(`/detail/${movie.id}`, { state: { movie: movie } });
+    setIsOpen(true);
   };
   const styles = {
     card: {
@@ -92,10 +94,8 @@ export default function CardComponent(props) {
                     </Box>
                   </CardContent>
                   <CardActions sx={{ position: "absolute", bottom: 0 }}>
-                    <Button size="small" onClick={() => handleClick(movie)}>
-                      show
-                    </Button>
-                    <Button size="small">shere</Button>
+                    <DetailDialog movie={movie} />
+                    {/* <Button size="small">shere</Button> */}
                   </CardActions>
                 </Card>
               </Grid>
