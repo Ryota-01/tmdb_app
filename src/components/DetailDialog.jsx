@@ -40,6 +40,7 @@ export default function DetailDialog(props) {
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
+        sx={{ width: "100%", margin: "0 auto" }}
       >
         <DialogTitle color="text.secondary" fontWeight="bold" sx={{ m: 0, p: 2 }} id="customized-dialog-title">
           『{movie.title}』

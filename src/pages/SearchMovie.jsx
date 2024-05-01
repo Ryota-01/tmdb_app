@@ -2,13 +2,16 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import NavBar from "../components/NavBar";
 import CardComponent from "../components/CardComponent";
-import { Box, Divider, TextField, Typography } from "@mui/material";
+import { Box, Divider, Pagination, TextField, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
 export default function SearchMovie() {
   const [searchMovies, setSearchMovies] = useState([]);
   const [inputElement, setInputElement] = useState("");
   const [message, setMessage] = useState(inputElement === "" && "");
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalResults, setTotalResults] = useState(0);
+  const [pages, setPages] = useState(1);
   const onChange = (e) => {
     setInputElement(e.target.value);
     if (searchMovies.results.length === 0) {
@@ -27,18 +30,21 @@ export default function SearchMovie() {
     };
     axios
       .get(
-        `https://api.themoviedb.org/3/search/movie?query=${inputElement}&include_adult=false&language=ja&page=1`,
+        `https://api.themoviedb.org/3/search/movie?query=${inputElement}&include_adult=false&language=ja&page=${pages}`,
         options
       )
       .then((res) => {
         console.log(res.data);
         setSearchMovies(res.data);
+        setPages(res.data.page);
+        setTotalPages(res.data.total_pages);
+        setTotalResults(res.data.total_results);
       })
       .catch((e) => {
         console.error(e);
         setMessage("エラーが発生しました。");
       });
-  }, [inputElement]);
+  }, [inputElement, pages]);
 
   const styles = {
     box: {
@@ -69,9 +75,20 @@ export default function SearchMovie() {
       </Box>
       <Divider />
       {searchMovies.results && searchMovies.results.length > 0 ? (
-        <Box sx={{ marginTop: "32px" }}>
-          <CardComponent movies={searchMovies.results} />
-        </Box>
+        <>
+          <Box sx={{ marginTop: "32px" }}>
+            <Typography  {...styles.message}>{totalResults}件の映画情報がヒットしました</Typography>
+          </Box>
+          <Box sx={{ marginTop: "32px", display: "flex", justifyContent: "center" }}>
+            <Pagination count={totalPages} color="primary" page={pages} onChange={(e, page) => setPages(page)} />
+          </Box>
+          <Box sx={{ marginTop: "32px" }}>
+            <CardComponent movies={searchMovies.results} />
+          </Box>
+          <Box sx={{ marginTop: "32px", display: "flex", justifyContent: "center" }}>
+            <Pagination count={totalPages} color="primary" page={pages} onChange={(e, page) => setPages(page)} />
+          </Box>
+        </>
       ) : (
         <Typography {...styles.message}>{message}</Typography>
       )}

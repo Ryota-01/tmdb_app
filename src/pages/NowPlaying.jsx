@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Box } from "@mui/material";
+import { Grid, Box, Pagination } from "@mui/material";
 import axios from "axios";
 import NavBar from "../components/NavBar";
 import CardComponent from "../components/CardComponent";
 
 export default function NowPlaying() {
   const [movies, setMovies] = useState([]);
-  console.log();
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalResults, setTotalResults] = useState(0);
+  const [pages, setPages] = useState(1);
   useEffect(() => {
     const options = {
       method: "GET",
@@ -19,24 +21,33 @@ export default function NowPlaying() {
 
     axios
       .get(
-        "https://api.themoviedb.org/3/movie/now_playing?api_key=bf827a970c4e63f0fedbc1cc32967183&language=ja&page=1",
+        `https://api.themoviedb.org/3/movie/now_playing?api_key=bf827a970c4e63f0fedbc1cc32967183&language=ja&page=${pages}`,
         options
       )
       .then((res) => {
         console.log(res.data);
         setMovies(res.data);
+        setPages(res.data.page);
+        setTotalPages(res.data.total_pages);
+        setTotalResults(res.data.total_results);
       })
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [pages]);
 
   return (
     <>
       nowplaying
       <NavBar />
+      <Box sx={{ margin: "32px 0", display: "flex", justifyContent: "center" }}>
+        <Pagination count={totalPages} color="primary" page={pages} onChange={(e, page) => setPages(page)} />
+      </Box>
       <Box>
         <CardComponent movies={movies.results} />
+      </Box>
+      <Box sx={{ margin: "32px 0", display: "flex", justifyContent: "center" }}>
+        <Pagination count={totalPages} color="primary" page={pages} onChange={(e, page) => setPages(page)} />
       </Box>
     </>
   );
