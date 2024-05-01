@@ -60,6 +60,7 @@ export default function CardComponent(props) {
       },
     },
   };
+  
 
   return (
     <>
