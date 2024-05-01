@@ -1,19 +1,34 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Box } from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Box, Typography } from "@mui/material";
 
 export default function NavBar() {
+  const location = useLocation();
+  const [title, setTitle] = useState("HOME");
+
+  useEffect(() => {
+    const pathname = location.pathname;
+    if (pathname === "/nowplaying") {
+      setTitle("公開中");
+    } else if (pathname === "/searchmovie") {
+      setTitle("映画検索");
+    }
+  }, [location.pathname]);
+
   return (
-    <Box sx={{ margin: "24px 0" }}>
+    <Box>
+      <Typography variant="h5" padding="14px 0">
+        {title}
+      </Typography>
       <ul>
         <Link to="/home">
-          <li>home</li>
+          <li>Home</li>
         </Link>
         <Link to="/nowplaying">
-          <li>nowplaying</li>
+          <li>公開中</li>
         </Link>
         <Link to="/searchmovie">
-          <li>searchmovie</li>
+          <li>映画検索</li>
         </Link>
       </ul>
     </Box>

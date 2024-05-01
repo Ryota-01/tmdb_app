@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Box,
-  Button,
   Card,
   Chip,
   CardActions,
@@ -10,18 +9,19 @@ import {
   Grid,
   Typography,
   Stack,
+  Checkbox,
+  Skeleton,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import FormattedDate from "../hooks/FormattedDate";
 import DetailDialog from "./DetailDialog";
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 
 export default function CardComponent(props) {
   const { movies } = props;
-  const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState();
-  const handleClick = (movie) => {
-    setIsOpen(true);
-  };
+  const loading = props.loading;
+  const [like, setLike] = useState();
+
   const styles = {
     card: {
       sx: {
@@ -60,15 +60,14 @@ export default function CardComponent(props) {
       },
     },
   };
-  
 
   return (
     <>
       <Grid container spacing={3}>
         {movies && movies ? (
           <>
-            {movies.map((movie) => (
-              <Grid item xs={12} sm={6} md={3}>
+            {movies.map((movie, key) => (
+              <Grid item key={key} xs={12} sm={6} md={3}>
                 <Card {...styles.card}>
                   <CardMedia
                     image={`https://image.tmdb.org/t/p/w200${movie.poster_path}`}
@@ -95,8 +94,15 @@ export default function CardComponent(props) {
                     </Box>
                   </CardContent>
                   <CardActions sx={{ position: "absolute", bottom: 0 }}>
-                    <DetailDialog movie={movie} />
-                    {/* <Button size="small">shere</Button> */}
+                    <Stack direction="row" justifyContent="space-between">
+                      <DetailDialog movie={movie} />
+                      {!like && (
+                        <Checkbox
+                          icon={<ThumbUpOffAltIcon />}
+                          checkedIcon={<ThumbUpIcon />}
+                        />
+                      )}
+                    </Stack>
                   </CardActions>
                 </Card>
               </Grid>

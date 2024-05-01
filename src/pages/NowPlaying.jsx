@@ -38,16 +38,25 @@ export default function NowPlaying() {
 
   return (
     <>
-      nowplaying
       <NavBar />
       <Box sx={{ margin: "32px 0", display: "flex", justifyContent: "center" }}>
-        <Pagination count={totalPages} color="primary" page={pages} onChange={(e, page) => setPages(page)} />
+        <Pagination
+          count={totalPages}
+          color="primary"
+          page={pages}
+          onChange={(e, page) => setPages(page)}
+        />
       </Box>
       <Box>
         <CardComponent movies={movies.results} />
       </Box>
       <Box sx={{ margin: "32px 0", display: "flex", justifyContent: "center" }}>
-        <Pagination count={totalPages} color="primary" page={pages} onChange={(e, page) => setPages(page)} />
+        <Pagination
+          count={totalPages}
+          color="primary"
+          page={pages}
+          onChange={(e, page) => setPages(page)}
+        />
       </Box>
     </>
   );
